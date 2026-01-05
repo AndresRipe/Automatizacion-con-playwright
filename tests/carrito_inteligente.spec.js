@@ -28,7 +28,7 @@ test('login con usuario válido', async ({ page }) => {
   await page.getByRole('button',{name: 'Continue Shopping'}).click()
   await page.getByRole('link', {name: 'Cart'}).click()
   await expect(page.getByText('Shopping Cart')).toBeVisible()
-  await page.locator('.cart_quantity_delete').nth(2).click()
+  await page.locator('.cart_quantity_delete').nth(0).click()
   await page.getByText('Proceed To Checkout').click()
   await expect (page.getByText('Address Details')).toBeVisible()
   await page.locator('textarea[name="message"]').fill('Este es mi comentario')
@@ -39,6 +39,7 @@ test('login con usuario válido', async ({ page }) => {
   await page.locator('[data-qa="expiry-month"]').fill('12')
   await page.locator('[data-qa="expiry-year"]').fill('33')
   await page.getByRole('button',{name: 'Pay and Confirm Order'}).click()
+  await expect(page.getByText('Congratulations! Your order has been confirmed!')).toBeVisible()
 
 
 

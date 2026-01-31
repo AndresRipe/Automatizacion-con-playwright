@@ -1,25 +1,71 @@
 import { test, expect } from '@playwright/test';
 
-test('Login API devuelve token', async ({ request }) => {
+test.describe('Ciclo de vida de una Reserva - Backend', () => {
 
-    const response = await request.post('https://api.test.a2censo.com/login', {
+    let token;
+    let bookingId;
 
-        headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-            'Accept': 'application/json, text/plain, */*',
-            'apikey': 'pb4eYjePavmcpKFa',
-            'Origin': 'https://test.a2censo.com'
-        },
-        data: {
-            email: 'bestqa@yopmail.com',
-            password: 'Clave1234*'
-        }
+    test('Login API devuelve token', async ({ request }) => {
+        const response = await request.post(
+            'https://restful-booker.herokuapp.com/auth',
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    username: 'admin',
+                    password: 'password123'
+                }
+            }
+        );
+
+        expect(response.status()).toBe(200);
+
+        const body = await response.json();
+        const token = body.token;
+
+        expect(token).toBeDefined();
+
+        console.log('TOKEN =>', token);
     });
 
-    expect(response.status()).toBe(200);
+    test('crear reserva', async ({ request }) => {
+        const crearReserva = await request.post(
+            'https://restful-booker.herokuapp.com/booking',
 
-    const body = await response.json();
-    expect(body.token).toBeDefined();
-    /*expect(body.user.email).toBe('usuario@test.com');*/
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                data: {
+
+                    "firstname": "Jim",
+                    "lastname": "Brown",
+                    "totalprice": 111,
+                    "depositpaid": true,
+                    "bookingdates": {
+                        "checkin": "2018-01-01",
+                        "checkout": "2019-01-01"
+                    },
+
+                }
+
+
+
+            }
+        )
+
+        expect(crearReserva.status()).toBe(200);
+        const createBody = await crearReserva.json();
+        bookingId = createBody.bookingid;
+
+        expect(bookingId).toBeDefined();
+
+        console.log('RESERVA CREADA - ID:', bookingId);
+
+        expect(bookingId).toBeDefined();
+
+    })
 
 });

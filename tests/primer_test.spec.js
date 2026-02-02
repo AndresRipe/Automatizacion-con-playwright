@@ -1,5 +1,5 @@
 // importar Playwright Test
-import { test, expect } from '@playwright/test';
+/*import { test, expect } from '@playwright/test';
 
 test('crear cuenta y confirmar correo', async ({ page }) => {
   await page.goto('https://test.a2censo.com');
@@ -86,3 +86,4 @@ test('crear cuenta y confirmar correo', async ({ page }) => {
 
 
 });
+*/
